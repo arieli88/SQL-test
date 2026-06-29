@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Test_DB – מבחן, טבלאות ו-ERD</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: Segoe UI, Tahoma, sans-serif; margin: 0; background: #f4f6f8; color: #1a1a2e; line-height: 1.55; }
+    header { background: #1e3a5f; color: #fff; padding: 1.25rem 2rem; }
+    header h1 { margin: 0 0 .25rem; font-size: 1.5rem; }
+    header p { margin: 0; opacity: .85; }
+    main { max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
+    .erd-card, .table-card, .question-card { background: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,.08); padding: 1.25rem; margin-bottom: 1.5rem; }
+    .erd-card h2, .table-card h2 { margin-top: 0; font-size: 1.2rem; border-bottom: 2px solid #e8ecf0; padding-bottom: .5rem; }
+    .count { font-size: .85rem; color: #666; font-weight: normal; }
+    nav { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.5rem; }
+    nav a { background: #fff; padding: .4rem .75rem; border-radius: 6px; text-decoration: none; color: #1e3a5f; font-size: .85rem; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+    nav a:hover { background: #1e3a5f; color: #fff; }
+    .nav-highlight { background: #2e6ea6 !important; color: #fff !important; font-weight: 600; }
+    table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+    th, td { border: 1px solid #dde3ea; padding: .45rem .6rem; text-align: right; }
+    th { background: #eef2f6; }
+    tr:nth-child(even) { background: #fafbfc; }
+    .schema-table { max-width: 600px; margin-bottom: 1rem; }
+    .scroll { overflow-x: auto; }
+    .mermaid { direction: ltr; text-align: center; }
+    .erd-image { width: 100%; max-width: 100%; border: 1px solid #dde3ea; border-radius: 8px; margin-bottom: 1.5rem; }
+    h3 { font-size: .95rem; color: #444; margin: 1rem 0 .5rem; }
+    .section-title { font-size: 1.4rem; margin: 0 0 .25rem; color: #1e3a5f; }
+    .section-sub { color: #666; margin: 0 0 1rem; }
+    .questions-section { margin-bottom: 2rem; }
+    .q-nav { margin-bottom: 1.25rem; }
+    .q-nav a { font-size: .8rem; padding: .3rem .55rem; }
+    .q-badge { display: inline-block; background: #1e3a5f; color: #fff; font-size: .75rem; padding: .2rem .6rem; border-radius: 4px; margin-bottom: .6rem; }
+    .q-he { font-size: 1.05rem; font-weight: 600; margin: 0 0 .35rem; }
+    .q-en { font-size: .9rem; color: #555; margin: 0 0 .75rem; direction: ltr; text-align: left; }
+    .q-explain { background: #f0f7ff; border-right: 4px solid #2e6ea6; padding: .75rem 1rem; border-radius: 0 8px 8px 0; margin: 0; }
+    .q-sql { background: #1e2a3a; color: #e8ecf0; padding: 1rem; border-radius: 8px; overflow-x: auto; direction: ltr; text-align: left; font-size: .8rem; line-height: 1.45; margin: 0; }
+    .q-options { margin: .5rem 0; padding-right: 1.25rem; }
+    .q-options li { margin: .2rem 0; }
+    .q-answer { background: #e8f5e9; border: 1px solid #a5d6a7; color: #2e7d32; padding: .65rem 1rem; border-radius: 8px; margin-top: .75rem; font-size: .95rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Test_DB</h1>
+    <p>מסד נתונים בנקאי – שאלות מבחן, 11 טבלאות, נתונים ו-ERD</p>
+  </header>
+  <main>
+    <nav><a href="#questions" class="nav-highlight">שאלות מבחן</a><a href="#erd">ERD</a><a href="#ACCOUNT">ACCOUNT</a><a href="#ACC_TRANSACTION">ACC_TRANSACTION</a><a href="#BRANCH">BRANCH</a><a href="#BUSINESS">BUSINESS</a><a href="#CUSTOMER">CUSTOMER</a><a href="#DEPARTMENT">DEPARTMENT</a><a href="#EMPLOYEE">EMPLOYEE</a><a href="#INDIVIDUAL">INDIVIDUAL</a><a href="#OFFICER">OFFICER</a><a href="#PRODUCT">PRODUCT</a><a href="#PRODUCT_TYPE">PRODUCT_TYPE</a></nav>
+    
+    <section class="questions-section" id="questions">
+      <h2 class="section-title">שאלות מבחן (20)</h2>
+      <p class="section-sub">כל שאלה עם הסבר פשוט, השאילתה והתשובה</p>
+      <nav class="q-nav"><a href="#q1">שאלה 1</a><a href="#q2">שאלה 2</a><a href="#q3">שאלה 3</a><a href="#q4">שאלה 4</a><a href="#q5">שאלה 5</a><a href="#q6">שאלה 6</a><a href="#q7">שאלה 7</a><a href="#q8">שאלה 8</a><a href="#q9">שאלה 9</a><a href="#q10">שאלה 10</a><a href="#q11">שאלה 11</a><a href="#q12">שאלה 12</a><a href="#q13">שאלה 13</a><a href="#q14">שאלה 14</a><a href="#q15">שאלה 15</a><a href="#q16">שאלה 16</a><a href="#q17">שאלה 17</a><a href="#q18">שאלה 18</a><a href="#q19">שאלה 19</a><a href="#q20">שאלה 20</a></nav>
+      
+    <article class="question-card" id="q1">
+      <div class="q-badge">שאלה 1</div>
+      <p class="q-he">כאשר מקבצים את היתרה בהמתנה של החשבונות לפי ערים של הסניפים, איזו עיר מייצגת כ-40% מסך היתרות בהמתנה?</p>
+      <p class="q-en">When grouping by city (of the branches) the pending balance of the accounts, which city is representing 40% of the total pending balances?</p>
+      <h3>במילים פשוטות</h3>
+      <p class="q-explain">לכל חשבון יש סניף שבו נפתח. לכל סניף יש עיר. אנחנו מחברים חשבון לסניף שלו, מקבצים לפי עיר, מחברים את כל היתרות בהמתנה בכל עיר, ואז בודקים איזו עיר הכי קרובה ל-40% מכל הכסף בהמתנה.</p>
+      <h3>השאילתה</h3>
+      <pre class="q-sql"><code>SELECT 
+    b.CITY,
+    SUM(a.PENDING_BALANCE) AS total_pending,
+    ROUND(SUM(a.PENDING_BALANCE) * 100.0 / (SELECT SUM(PENDING_BALANCE) FROM ACCOUNT), 2) AS pct
+FROM ACCOUNT a
+JOIN BRANCH b ON a.OPEN_BRANCH_ID = b.BRANCH_ID
+GROUP BY b.CITY
+ORDER BY total_pending DESC;</code></pre>
+      <h3>אפשרויות</h3>
+      <ul class="q-options"><li>א. Waltham</li><li>ב. Woburn</li><li>ג. Quincy</li><li>ד. Cambridge</li><li>ה. Salem</li></ul>
+      <div class="q-answer">✓ תשובה: <strong>ה. Salem (40.08%)</strong></div>
+    </article>
+    <article class="question-card" id="q2">
+      <div class="q-badge">שאלה 2</div>
+      <p class="q-he">כאשר מקבצים את היתרה הזמינה של החשבונות לפי ערים של הסניפים, איזו עיר מייצגת כ-12.5% מסך היתרות הזמינות?</p>
+      <p class="q-en">When grouping by city (of the branches) the available balance of the accounts, which city is representing 12.5% of the total available balances?</p>
+      <h3>במילים פשוטות</h3>
+      <p class="q-explain">אותו רעיון כמו בשאלה 1, רק הפעם סוכמים את היתרה הזמינה (הכסף שאפשר להשתמש בו עכשיו) במקום היתרה בהמתנה.</p>
+      <h3>השאילתה</h3>
+      <pre class="q-sql"><code>SELECT 
+    b.CITY,
+    SUM(a.AVAIL_BALANCE) AS total_avail,
+    ROUND(SUM(a.AVAIL_BALANCE) * 100.0 / (SELECT SUM(AVAIL_BALANCE) FROM ACCOUNT), 2) AS pct
+FROM ACCOUNT a
+JOIN BRANCH b ON a.OPEN_BRANCH_ID = b.BRANCH_ID
+GROUP BY b.CITY
+ORDER BY total_avail DESC;</code></pre>
+      <h3>אפשרויות</h3>
+      <ul class="q-options"><li>א. Waltham</li><li>ב. Quincy</li><li>ג. Cambridge</li><li>ד. Salem</li><li>ה. Woburn</li></ul>
+      <div class="q-answer">✓ תשובה: <strong>ה. Woburn (12.51%)</strong></div>
+    </article>
+    <article class="question-card" id="q3">
+      <div class="q-badge">שאלה 3</div>
+      <p class="q-he">מהי כמות/סכום הטרנזקציות שבוצעו על החשבונות של לקוח מספר 9?</p>
+      <p class="q-en">What is the sum of the amount of transactions in the account of customer with CUST_ID = 9?</p>
+      <h3>במילים פשוטות</h3>
+      <p class="q-explain">מוצאים את כל החשבונות של לקוח 9, ואז את כל התנועות (טרנזקציות) על החשבונות האלה. בסוף מחברים את כל סכומי התנועות לסכום אחד.</p>
+      <h3>השאילתה</h3>
+      <pre class="q-sql"><code>SELECT SUM(t.AMOUNT) AS total_amount
+FROM ACC_TRANSACTION t
+JOIN ACCOUNT a ON t.ACCOUNT_ID = a.ACCOUNT_ID
+WHERE a.CUST_ID = 9;</code></pre>
+      <h3>אפשרויות</h3>
+      <ul class="q-options"><li>א. 275</li><li>ב. 650</li><li>ג. 100</li><li>ד. 300</li></ul>
+      <div class="q-answer">✓ תשובה: <strong>ד. 300</strong></div>
+    </article>
+    <article class="question-card" id="q4">
+      <div class="q-badge">שאלה 4</div>
+      <p class="q-he">מה התפקיד (TITLE) של העובד שאין לו מנהל?</p>
+      <p class="q-en">What is the title of the employee that has no superior (SUPERIOR_EMP_ID is null)?</p>
+      <h3>במילים פשוטות</h3>
+      <p class="q-explain">ברשימת העובדים יש שדה 'מנהל'. מחפשים את העובד היחיד שאין לו מנהל מעליו — הוא בראש הארגון.</p>
+      <h3>השאילתה</h3>
+      <pre class="q-sql"><code>SELECT EMP_ID, FIRST_NAME, LAST_NAME, TITLE
+FROM EMPLOYEE
+WHERE SUPERIOR_EMP_ID IS NULL;</code></pre>
+      <h3>אפשרויות</h3>
+      <ul class="q-options"><li>א. Treasurer</li><li>ב. CEO</li><li>ג. VP</li><li>ד. President</li></ul>
+      <div class="q-answer">✓ תשובה: <strong>ד. President</strong></div>
+    </article>
+    <article class="question-card" id="q5">
+      <div class="q-badge">שאלה 5</div>
+      <p class="q-he">מה שם המחלקה שלא משויך אליה שום עובד?</p>
+      <p class="q-en">What is the NAME of the department that no employee is attached to?</p>
+      <h3>במילים פשוטות</h3>
+      <p class="q-explain">עוברים על כל המחלקות ובודקים אם יש להן עובד. המחלקה שנשארת בלי אף עובד — זו התשובה.</p>
+      <h3>השאילתה</h3>
+      <pre class="q-sql"><code>SELECT d.DEPT_ID, d.NAME
+FROM DEPARTMENT d
+LEFT JOIN EMPLOYEE e ON d.DEPT_ID = e.DEPT_ID
+WHERE e.EMP_ID IS NULL;</code></pre>
+      <h3>אפשרויות</h3>
+      <ul class="q-options"><li>א. Operations</li><li>ב. IT</li><li>ג. Loans</li><li>ד. Administration</li></ul>
+      <div class="q-answer">✓ תשובה: <strong>ב. IT</strong></div>
+    </article>
+    <article class="question-card" id="q6">
+      <div class="q-badge">שאלה 6</div>
+      <p class="q-he">מה מספר החשבון של לקוח עסקי שהשנה ב-INCORP_DATE גדולה מ-2001?</p>
+      <p class="q-en">What is the account_id of the business customer whose INCORP_DATE is over the year 2001?</p>
+      <h3>במילים פשוטות</h3>
+      <p class="q-explain">מחברים לקוח עסקי ← פרטי העסק ← החשבונות שלו. בוחרים רק עסקים שהתאגדו אחרי שנת 2001, ומחזירים את מספר החשבון.</p>
+      <h3>השאילתה</h3>
+      <pre class="q-sql"><code>SELECT a.ACCOUNT_ID
+FROM CUSTOMER c
+JOIN BUSINESS b ON c.CUST_ID = b.CUST_ID
+JOIN ACCOUNT a ON c.CUST_ID = a.CUST_ID
+WHERE YEAR(b.INCORP_DATE) &gt; 2001;</code></pre>
+      <h3>אפשרויות</h3>
+      <ul class="q-options"><li>א. 10</li><li>ב. 34</li><li>ג. 28</li><li>ד. 15</li></ul>
+      <div class="q-answer">✓ תשובה: <strong>ג. 28</strong></div>
+    </article>
+    <article class="question-card" id="q7">
+      <div class="q-badge">שאלה 7</div>
+      <p class="q-he">באיזו עיר גר הלקוח הפרטי ששם המשפחה שלו Spencer?</p>
+      <p class="q-en">In which city does the Individual customer called Spencer as LAST_NAME lives?</p>
+      <h3>במילים פשוטות</h3>
+      <p class="q-explain">מחברים טבלת אנשים פרטיים לטבלת לקוחות (אותו מספר לקוח). מחפשים מי ששם המשפחה Spencer ולוקחים את העיר שלו.</p>
+      <h3>השאילתה</h3>
+      <pre class="q-sql"><code>SELECT c.CITY
+FROM INDIVIDUAL i
+JOIN CUSTOMER c ON i.CUST_ID = c.CUST_ID
+WHERE i.LAST_NAME = 'Spencer';</code></pre>
+      <h3>אפשרויות</h3>
+      <ul class="q-options"><li>א. Melbourne</li><li>ב. Woburn</li><li>ג. Lynnfield</li><li>ד. Waltham</li></ul>
+      <div class="q-answer">✓ תשובה: <strong>ד. Waltham</strong></div>
+    </article>
+    <article class="question-card" id="q8">
+      <div class="q-badge">שאלה 8</div>
+      <p class="q-he">מה שם הלקוח העסקי שיש לו יתרה זמינה של למעלה מ-40,000$?</p>
+      <p class="q-en">What is the name of the business customer that has an available balance of over $40,000?</p>
+      <h3>במילים פשוטות</h3>
+      <p class="q-explain">מחברים עסקים לחשבונות שלהם, ובודקים מי מהם יש לו יתרה זמינה מעל 40,000 דולר.</p>
+      <h3>השאילתה</h3>
+      <pre class="q-sql"><code>SELECT b.NAME, a.AVAIL_BALANCE
+FROM BUSINESS b
+JOIN ACCOUNT a ON b.CUST_ID = a.CUST_ID
+WHERE a.AVAIL_BALANCE &gt; 40000;</code></pre>
+      <h3>אפשרויות</h3>
+      <ul class="q-options"><li>א. Chilton Engineering</li><li>ב. Northeast Cooling Inc.</li><li>ג. Superior Auto Body</li><li>ד. AAA Insurance Inc.</li></ul>
+      <div class="q-answer">✓ תשובה: <strong>ד. AAA Insurance Inc.</strong></div>
+    </article>
+    <article class="question-card" id="q9">
+      <div class="q-badge">שאלה 9</div>
+      <p class="q-he">מה מספר העובד של העובד החדש ביותר בארגון (תאריך ההתחלה האחרון)?</p>
+      <p class="q-en">What is the EMP_ID of the employee whose start_date is the most recent?</p>
+      <h3>במילים פשוטות</h3>
+      <p class="q-explain">מסדרים את כל העובדים לפי תאריך התחלת העבודה — מהחדש לישן — ולוקחים את הראשון ברשימה.</p>
+      <h3>השאילתה</h3>
+      <pre class="q-sql"><code>SELECT EMP_ID, FIRST_NAME, LAST_NAME, START_DATE
+FROM EMPLOYEE
+ORDER BY START_DATE DESC
+LIMIT 1;</code></pre>
+      <h3>אפשרויות</h3>
+      <ul class="q-options"><li>א. 10</li><li>ב. 18</li><li>ג. 8</li><li>ד. 7</li></ul>
+      <div class="q-answer">✓ תשובה: <strong>ד. 7 (Chris Tucker, 2004-09-15)</strong></div>
+    </article>
+    <article class="question-card" id="q10">
+      <div class="q-badge">שאלה 10</div>
+      <p class="q-he">מה מספר העובד של המנהל שמנהל תחתיו את המספר הרב ביותר של עובדים?</p>
+      <p class="q-en">What is the EMP_ID of the manager with the most employees in their team?</p>
+      <h3>במילים פשוטות</h3>
+      <p class="q-explain">סופרים לכל מנהל כמה עובדים מדווחים אליו ישירות. המנהל עם הכי הרבה כפופים — זו התשובה (Susan Hawthorne, מספר 4).</p>
+      <h3>השאילתה</h3>
+      <pre class="q-sql"><code>SELECT e.SUPERIOR_EMP_ID AS manager_emp_id,
+       m.FIRST_NAME, m.LAST_NAME, COUNT(*) AS team_size
+FROM EMPLOYEE e
+JOIN EMPLOYEE m ON e.SUPERIOR_EMP_ID = m.EMP_ID
+GROUP BY e.SUPERIOR_EMP_ID, m.FIRST_NAME, m.LAST_NAME
+ORDER BY team_size DESC;</code></pre>
+      <h3>אפשרויות</h3>
+      <ul class="q-options"><li>א. 4</li><li>ב. 3</li><li>ג. 9</li><li>ד. 11</li></ul>
+      <div class="q-answer">✓ תשובה: <strong>א. 4</strong></div>
+    </article>
+    <article class="question-card" id="q11">
+      <div class="q-badge">שאלה 11</div>
+      <p class="q-he">מה שם המחלקה שמכילה את הכמות הגדולה ביותר של עובדים?</p>
+      <p class="q-en">What is the name of the department with the most employees in it?</p>
+      <h3>במילים פשוטות</h3>
+      <p class="q-explain">מחברים מחלקות לעובדים, סופרים כמה עובדים יש בכל מחלקה, ובוחרים את המחלקה עם המספר הגבוה ביותר.</p>
+      <h3>השאילתה</h3>
+      <pre class="q-sql"><code>SELECT d.NAME, COUNT(e.EMP_ID) AS emp_count
+FROM DEPARTMENT d
+JOIN EMPLOYEE e ON d.DEPT_ID = e.DEPT_ID
+GROUP BY d.DEPT_ID, d.NAME
+ORDER BY emp_count DESC;</code></pre>
+      <h3>אפשרויות</h3>
+      <ul class="q-options"><li>א. Operations</li><li>ב. Administration</li><li>ג. Marketing</li><li>ד. Loans</li></ul>
+      <div class="q-answer">✓ תשובה: <strong>א. Operations (14 עובדים)</strong></div>
+    </article>
+    <article class="question-card" id="q12">
+      <div class="q-badge">שאלה 12</div>
+      <p class="q-he">מהי שנת ה-INCORP_DATE של העסק שבו השם הפרטי של הפקיד הוא Stanley?</p>
+      <p class="q-en">What is the year of the INCORP_DATE of the business where the officer first name is Stanley?</p>
+      <h3>במילים פשוטות</h3>
+      <p class="q-explain">מחברים פקיד (officer) לעסק שלו. מחפשים פקיד בשם Stanley ולוקחים את שנת ההתאגדות של העסק.</p>
+      <h3>השאילתה</h3>
+      <pre class="q-sql"><code>SELECT YEAR(b.INCORP_DATE) AS incorp_year
+FROM OFFICER o
+JOIN BUSINESS b ON o.CUST_ID = b.CUST_ID
+WHERE o.FIRST_NAME = 'Stanley';</code></pre>
+      <h3>אפשרויות</h3>
+      <ul class="q-options"><li>א. 2000</li><li>ב. 2006</li><li>ג. 1998</li><li>ד. 1999</li></ul>
+      <div class="q-answer">✓ תשובה: <strong>ד. 1999</strong></div>
+    </article>
+    <article class="question-card" id="q13">
+      <div class="q-badge">שאלה 13</div>
+      <p class="q-he">כמה עובדים משויכים למחלקת Administration?</p>
+      <p class="q-en">How many employees are working for the department called Administration?</p>
+      <h3>במילים פשוטות</h3>
+      <p class="q-explain">מוצאים את מחלקת Administration וסופרים כמה עובדים שייכים אליה.</p>
+      <h3>השאילתה</h3>
+      <pre class="q-sql"><code>SELECT COUNT(e.EMP_ID) AS emp_count
+FROM EMPLOYEE e
+JOIN DEPARTMENT d ON e.DEPT_ID = d.DEPT_ID
+WHERE d.NAME = 'Administration';</code></pre>
+      <h3>אפשרויות</h3>
+      <ul class="q-options"><li>א. 15</li><li>ב. 3</li><li>ג. 2</li><li>ד. 18</li></ul>
+      <div class="q-answer">✓ תשובה: <strong>ב. 3</strong></div>
+    </article>
+    <article class="question-card" id="q14">
+      <div class="q-badge">שאלה 14</div>
+      <p class="q-he">מהי שנת ה-INCORP_DATE של העסק שבו שם המשפחה של הפקיד הוא Lutz?</p>
+      <p class="q-en">What is the year of the INCORP_DATE of the business where the officer last name is Lutz?</p>
+      <h3>במילים פשוטות</h3>
+      <p class="q-explain">כמו בשאלה 12, רק הפעם מחפשים לפי שם משפחה Lutz במקום שם פרטי.</p>
+      <h3>השאילתה</h3>
+      <pre class="q-sql"><code>SELECT YEAR(b.INCORP_DATE) AS incorp_year
+FROM OFFICER o
+JOIN BUSINESS b ON o.CUST_ID = b.CUST_ID
+WHERE o.LAST_NAME = 'Lutz';</code></pre>
+      <h3>אפשרויות</h3>
+      <ul class="q-options"><li>א. 2005</li><li>ב. 2002</li><li>ג. 2000</li><li>ד. 2003</li></ul>
+      <div class="q-answer">✓ תשובה: <strong>ב. 2002</strong></div>
+    </article>
+    <article class="question-card" id="q15">
+      <div class="q-badge">שאלה 15</div>
+      <p class="q-he">מה שם העיר שבה גרים הכי הרבה לקוחות?</p>
+      <p class="q-en">What is the name of the city with the most customers located in?</p>
+      <h3>במילים פשוטות</h3>
+      <p class="q-explain">עוברים על כל הלקוחות, מקבצים לפי עיר מגורים, סופרים כמה לקוחות בכל עיר, ובוחרים את העיר עם הכי הרבה.</p>
+      <h3>השאילתה</h3>
+      <pre class="q-sql"><code>SELECT CITY, COUNT(*) AS customer_count
+FROM CUSTOMER
+GROUP BY CITY
+ORDER BY customer_count DESC;</code></pre>
+      <h3>אפשרויות</h3>
+      <ul class="q-options"><li>א. Newton</li><li>ב. Paris</li><li>ג. Woburn</li><li>ד. Salem</li></ul>
+      <div class="q-answer">✓ תשובה: <strong>ד. Salem (4 לקוחות)</strong></div>
+    </article>
+    <article class="question-card" id="q16">
+      <div class="q-badge">שאלה 16</div>
+      <p class="q-he">מהו סכום הטרנזקציות שבוצעו על החשבונות של לקוח מספר 6?</p>
+      <p class="q-en">What is the sum of the amount of transactions in the account of customer with CUST_ID = 6?</p>
+      <h3>במילים פשוטות</h3>
+      <p class="q-explain">מוצאים את כל החשבונות של לקוח 6 (John Spencer), ואז את כל התנועות עליהם. מחברים את כל הסכומים — 2 חשבונות × 100$ = 200$.</p>
+      <h3>השאילתה</h3>
+      <pre class="q-sql"><code>SELECT SUM(t.AMOUNT) AS total_amount
+FROM ACC_TRANSACTION t
+JOIN ACCOUNT a ON t.ACCOUNT_ID = a.ACCOUNT_ID
+WHERE a.CUST_ID = 6;</code></pre>
+      <h3>אפשרויות</h3>
+      <ul class="q-options"><li>א. 300</li><li>ב. 100</li><li>ג. 200</li><li>ד. 50</li></ul>
+      <div class="q-answer">✓ תשובה: <strong>ג. 200</strong></div>
+    </article>
+    <article class="question-card" id="q17">
+      <div class="q-badge">שאלה 17</div>
+      <p class="q-he">באיזו עיר גר הלקוח הפרטי ששמו הפרטי הוא Louis?</p>
+      <p class="q-en">In which city does the Individual customer called Louis as FIRST_NAME lives?</p>
+      <h3>במילים פשוטות</h3>
+      <p class="q-explain">מחברים לקוח פרטי לפרטי הכתובת שלו, מחפשים מי ששמו Louis, ולוקחים את העיר.</p>
+      <h3>השאילתה</h3>
+      <pre class="q-sql"><code>SELECT c.CITY
+FROM INDIVIDUAL i
+JOIN CUSTOMER c ON i.CUST_ID = c.CUST_ID
+WHERE i.FIRST_NAME = 'Louis';</code></pre>
+      <h3>אפשרויות</h3>
+      <ul class="q-options"><li>א. Salem</li><li>ב. Waltham</li><li>ג. Quincy</li><li>ד. Tokyo</li></ul>
+      <div class="q-answer">✓ תשובה: <strong>א. Salem</strong></div>
+    </article>
+    <article class="question-card" id="q18">
+      <div class="q-badge">שאלה 18</div>
+      <p class="q-he">מה מספר הלקוח שהיתרה הזמינה שלו שונה מהיתרה בהמתנה והפעילות האחרונה שלו משנת 2005?</p>
+      <p class="q-en">What is the CUST_ID of the customer whose AVAIL_BALANCE differs from PENDING_BALANCE and last activity is from 2005?</p>
+      <h3>במילים פשוטות</h3>
+      <p class="q-explain">מחפשים חשבון שבו שני סוגי היתרה לא שווים (יש הבדל בין זמין להמתנה), וגם שהפעילות האחרונה הייתה בשנת 2005.</p>
+      <h3>השאילתה</h3>
+      <pre class="q-sql"><code>SELECT a.CUST_ID, a.AVAIL_BALANCE, a.PENDING_BALANCE, a.LAST_ACTIVITY_DATE
+FROM ACCOUNT a
+WHERE a.AVAIL_BALANCE &lt;&gt; a.PENDING_BALANCE
+  AND YEAR(a.LAST_ACTIVITY_DATE) = 2005;</code></pre>
+      <h3>אפשרויות</h3>
+      <ul class="q-options"><li>א. 5</li><li>ב. 10</li><li>ג. 8</li><li>ד. 7</li></ul>
+      <div class="q-answer">✓ תשובה: <strong>א. 5</strong></div>
+    </article>
+    <article class="question-card" id="q19">
+      <div class="q-badge">שאלה 19</div>
+      <p class="q-he">מה מספר העובד הבכיר ביותר בסניף Salem? (שאר העובדים בסניף מדווחים אליו, והמנהל שלו עובד בסניף אחר)</p>
+      <p class="q-en">What is the emp_id of the most superior employee of the branch in Salem?</p>
+      <h3>במילים פשוטות</h3>
+      <p class="q-explain">מוצאים את כל העובדים בסניף Salem. Theresa Markham (16) היא Head Teller — שני ה-Tellers מדווחים אליה, והיא מדווחת למנהלת ב-Waltham.</p>
+      <h3>השאילתה</h3>
+      <pre class="q-sql"><code>SELECT e.EMP_ID, e.FIRST_NAME, e.LAST_NAME, e.TITLE, e.SUPERIOR_EMP_ID
+FROM EMPLOYEE e
+JOIN BRANCH b ON e.ASSIGNED_BRANCH_ID = b.BRANCH_ID
+WHERE b.CITY = 'Salem';</code></pre>
+      <h3>אפשרויות</h3>
+      <ul class="q-options"><li>א. 26</li><li>ב. 16</li><li>ג. 12</li><li>ד. 5</li></ul>
+      <div class="q-answer">✓ תשובה: <strong>ב. 16 (Theresa Markham)</strong></div>
+    </article>
+    <article class="question-card" id="q20">
+      <div class="q-badge">שאלה 20</div>
+      <p class="q-he">כמה חשבונות קשורים למוצר מסוג Insurance Offerings?</p>
+      <p class="q-en">How many accounts are related to a product type where product_type.name is Insurance Offerings?</p>
+      <h3>במילים פשוטות</h3>
+      <p class="q-explain">מחברים חשבון → מוצר → סוג מוצר. מחפשים סוג בשם Insurance Offerings. קיים במערכת אבל אין מוצרים ממנו — ולכן 0 חשבונות.</p>
+      <h3>השאילתה</h3>
+      <pre class="q-sql"><code>SELECT COUNT(*) AS account_count
+FROM ACCOUNT a
+JOIN PRODUCT p ON a.PRODUCT_CD = p.PRODUCT_CD
+JOIN PRODUCT_TYPE pt ON p.PRODUCT_TYPE_CD = pt.PRODUCT_TYPE_CD
+WHERE pt.NAME = 'Insurance Offerings';</code></pre>
+      <h3>אפשרויות</h3>
+      <ul class="q-options"><li>א. 24</li><li>ב. 10</li><li>ג. 0</li><li>ד. 7</li></ul>
+      <div class="q-answer">✓ תשובה: <strong>ג. 0</strong></div>
+    </article>
+    </section>
+    <section class="erd-card" id="erd">
+      <h2>ERD – קשרים בין טבלאות (Workbench)</h2>
+      <img src="assets/erd-workbench.png" alt="ERD diagram from MySQL Workbench" class="erd-image" />
+      <h2>ERD – תרשים מינימלי</h2>
+      <pre class="mermaid">erDiagram
+    CUSTOMER ||--o{ ACCOUNT : "CUST_ID"
+    BRANCH ||--o{ ACCOUNT : "OPEN_BRANCH_ID"
+    EMPLOYEE ||--o{ ACCOUNT : "OPEN_EMP_ID"
+    PRODUCT ||--o{ ACCOUNT : "PRODUCT_CD"
+    ACCOUNT ||--o{ ACC_TRANSACTION : "ACCOUNT_ID"
+    BRANCH ||--o{ ACC_TRANSACTION : "EXECUTION_BRANCH_ID"
+    EMPLOYEE ||--o{ ACC_TRANSACTION : "TELLER_EMP_ID"
+    CUSTOMER ||--o{ BUSINESS : "CUST_ID"
+    BRANCH ||--o{ EMPLOYEE : "ASSIGNED_BRANCH_ID"
+    DEPARTMENT ||--o{ EMPLOYEE : "DEPT_ID"
+    EMPLOYEE ||--o{ EMPLOYEE : "SUPERIOR_EMP_ID"
+    CUSTOMER ||--o{ INDIVIDUAL : "CUST_ID"
+    CUSTOMER ||--o{ OFFICER : "CUST_ID"
+    PRODUCT_TYPE ||--o{ PRODUCT : "PRODUCT_TYPE_CD"</pre>
+    </section>
+    
+    <section class="table-card" id="ACCOUNT">
+      <h2>ACCOUNT <span class="count">22 שורות</span></h2>
+      <h3>מבנה</h3>
+      <table class="schema-table">
+        <thead><tr><th>עמודה</th><th>סוג</th><th>מאפיינים</th></tr></thead>
+        <tbody><tr><td>ACCOUNT_ID</td><td>INTEGER</td><td>PK</td></tr><tr><td>AVAIL_BALANCE</td><td>REAL</td><td></td></tr><tr><td>CLOSE_DATE</td><td>TEXT</td><td></td></tr><tr><td>LAST_ACTIVITY_DATE</td><td>TEXT</td><td></td></tr><tr><td>OPEN_DATE</td><td>TEXT</td><td> NOT NULL</td></tr><tr><td>PENDING_BALANCE</td><td>REAL</td><td></td></tr><tr><td>STATUS</td><td>TEXT</td><td></td></tr><tr><td>CUST_ID</td><td>INTEGER</td><td></td></tr><tr><td>OPEN_BRANCH_ID</td><td>INTEGER</td><td> NOT NULL</td></tr><tr><td>OPEN_EMP_ID</td><td>INTEGER</td><td> NOT NULL</td></tr><tr><td>PRODUCT_CD</td><td>TEXT</td><td> NOT NULL</td></tr></tbody>
+      </table>
+      <h3>נתונים (עד 50 שורות)</h3>
+      <div class="scroll"><table><thead><tr><th>ACCOUNT_ID</th><th>AVAIL_BALANCE</th><th>CLOSE_DATE</th><th>LAST_ACTIVITY_DATE</th><th>OPEN_DATE</th><th>PENDING_BALANCE</th><th>STATUS</th><th>CUST_ID</th><th>OPEN_BRANCH_ID</th><th>OPEN_EMP_ID</th><th>PRODUCT_CD</th></tr></thead><tbody><tr><td>1</td><td>1057.75</td><td></td><td>2005-01-04</td><td>2000-01-15</td><td>1057.75</td><td>ACTIVE</td><td>1</td><td>2</td><td>10</td><td>CHK</td></tr><tr><td>2</td><td>500</td><td></td><td>2004-12-19</td><td>2000-01-15</td><td>500</td><td>ACTIVE</td><td>1</td><td>2</td><td>10</td><td>SAV</td></tr><tr><td>3</td><td>3000</td><td></td><td>2004-06-30</td><td>2004-06-30</td><td>3000</td><td>ACTIVE</td><td>1</td><td>2</td><td>10</td><td>CD</td></tr><tr><td>4</td><td>2258.02</td><td></td><td>2004-12-27</td><td>2001-03-12</td><td>2258.02</td><td>ACTIVE</td><td>2</td><td>2</td><td>10</td><td>CHK</td></tr><tr><td>5</td><td>200</td><td></td><td>2004-12-11</td><td>2001-03-12</td><td>200</td><td>ACTIVE</td><td>2</td><td>2</td><td>10</td><td>SAV</td></tr><tr><td>6</td><td>1057.75</td><td></td><td>2004-11-30</td><td>2002-11-23</td><td>1057.75</td><td>ACTIVE</td><td>3</td><td>3</td><td>13</td><td>CHK</td></tr><tr><td>7</td><td>2212.5</td><td></td><td>2004-12-05</td><td>2002-12-15</td><td>2212.5</td><td>ACTIVE</td><td>3</td><td>3</td><td>13</td><td>MM</td></tr><tr><td>8</td><td>534.12</td><td></td><td>2005-01-03</td><td>2003-09-12</td><td>534.12</td><td>ACTIVE</td><td>4</td><td>1</td><td>1</td><td>CHK</td></tr><tr><td>9</td><td>767.77</td><td></td><td>2004-10-24</td><td>2000-01-15</td><td>767.77</td><td>ACTIVE</td><td>4</td><td>1</td><td>1</td><td>SAV</td></tr><tr><td>10</td><td>5487.09</td><td></td><td>2004-11-11</td><td>2004-09-30</td><td>5487.09</td><td>ACTIVE</td><td>4</td><td>1</td><td>1</td><td>MM</td></tr><tr><td>11</td><td>2237.97</td><td></td><td>2005-01-05</td><td>2004-01-27</td><td>2897.97</td><td>ACTIVE</td><td>5</td><td>4</td><td>16</td><td>CHK</td></tr><tr><td>12</td><td>122.37</td><td></td><td>2004-11-29</td><td>2002-08-24</td><td>122.37</td><td>ACTIVE</td><td>6</td><td>1</td><td>1</td><td>CHK</td></tr><tr><td>13</td><td>10000</td><td></td><td>2004-12-28</td><td>2004-12-28</td><td>10000</td><td>ACTIVE</td><td>6</td><td>1</td><td>1</td><td>CD</td></tr><tr><td>14</td><td>5000</td><td></td><td>2004-01-12</td><td>2004-01-12</td><td>5000</td><td>ACTIVE</td><td>7</td><td>2</td><td>10</td><td>CD</td></tr><tr><td>15</td><td>3487.19</td><td></td><td>2005-01-03</td><td>2001-05-23</td><td>3487.19</td><td>ACTIVE</td><td>8</td><td>4</td><td>16</td><td>CHK</td></tr><tr><td>16</td><td>387.99</td><td></td><td>2004-10-12</td><td>2001-05-23</td><td>387.99</td><td>ACTIVE</td><td>8</td><td>4</td><td>16</td><td>SAV</td></tr><tr><td>17</td><td>125.67</td><td></td><td>2004-12-15</td><td>2003-07-30</td><td>125.67</td><td>ACTIVE</td><td>9</td><td>1</td><td>1</td><td>CHK</td></tr><tr><td>18</td><td>9345.55</td><td></td><td>2004-10-28</td><td>2004-10-28</td><td>9845.55</td><td>ACTIVE</td><td>9</td><td>1</td><td>1</td><td>MM</td></tr><tr><td>19</td><td>1500</td><td></td><td>2004-06-30</td><td>2004-06-30</td><td>1500</td><td>ACTIVE</td><td>9</td><td>1</td><td>1</td><td>CD</td></tr><tr><td>20</td><td>9345.55</td><td></td><td>2004-11-14</td><td>2004-03-22</td><td>9345.55</td><td>ACTIVE</td><td>11</td><td>2</td><td>10</td><td>BUS</td></tr><tr><td>21</td><td>38552.05</td><td></td><td>2004-12-15</td><td>2003-07-30</td><td>38552.05</td><td>ACTIVE</td><td>12</td><td>4</td><td>16</td><td>CHK</td></tr><tr><td>22</td><td>50000</td><td></td><td>2004-12-17</td><td>2004-02-22</td><td>50000</td><td>ACTIVE</td><td>13</td><td>3</td><td>13</td><td>SBL</td></tr></tbody></table></div>
+    </section>
+    <section class="table-card" id="ACC_TRANSACTION">
+      <h2>ACC_TRANSACTION <span class="count">0 שורות</span></h2>
+      <h3>מבנה</h3>
+      <table class="schema-table">
+        <thead><tr><th>עמודה</th><th>סוג</th><th>מאפיינים</th></tr></thead>
+        <tbody><tr><td>TXN_ID</td><td>INTEGER</td><td>PK</td></tr><tr><td>AMOUNT</td><td>REAL</td><td> NOT NULL</td></tr><tr><td>FUNDS_AVAIL_DATE</td><td>TEXT</td><td> NOT NULL</td></tr><tr><td>TXN_DATE</td><td>TEXT</td><td> NOT NULL</td></tr><tr><td>TXN_TYPE_CD</td><td>TEXT</td><td></td></tr><tr><td>ACCOUNT_ID</td><td>INTEGER</td><td></td></tr><tr><td>EXECUTION_BRANCH_ID</td><td>INTEGER</td><td></td></tr><tr><td>TELLER_EMP_ID</td><td>INTEGER</td><td></td></tr></tbody>
+      </table>
+      <h3>נתונים (עד 50 שורות)</h3>
+      <div class="scroll"><table><thead><tr></tr></thead><tbody></tbody></table></div>
+    </section>
+    <section class="table-card" id="BRANCH">
+      <h2>BRANCH <span class="count">4 שורות</span></h2>
+      <h3>מבנה</h3>
+      <table class="schema-table">
+        <thead><tr><th>עמודה</th><th>סוג</th><th>מאפיינים</th></tr></thead>
+        <tbody><tr><td>BRANCH_ID</td><td>INTEGER</td><td>PK</td></tr><tr><td>ADDRESS</td><td>TEXT</td><td></td></tr><tr><td>CITY</td><td>TEXT</td><td></td></tr><tr><td>NAME</td><td>TEXT</td><td> NOT NULL</td></tr><tr><td>STATE</td><td>TEXT</td><td></td></tr><tr><td>ZIP_CODE</td><td>TEXT</td><td></td></tr></tbody>
+      </table>
+      <h3>נתונים (עד 50 שורות)</h3>
+      <div class="scroll"><table><thead><tr><th>BRANCH_ID</th><th>ADDRESS</th><th>CITY</th><th>NAME</th><th>STATE</th><th>ZIP_CODE</th></tr></thead><tbody><tr><td>1</td><td>3882 Main St.</td><td>Waltham</td><td>Headquarters</td><td>MA</td><td>02451</td></tr><tr><td>2</td><td>422 Maple St.</td><td>Woburn</td><td>Woburn Branch</td><td>MA</td><td>01801</td></tr><tr><td>3</td><td>125 Presidential Way</td><td>Quincy</td><td>Quincy Branch</td><td>MA</td><td>02169</td></tr><tr><td>4</td><td>378 Maynard Ln.</td><td>Salem</td><td>So. NH Branch</td><td>NH</td><td>03079</td></tr></tbody></table></div>
+    </section>
+    <section class="table-card" id="BUSINESS">
+      <h2>BUSINESS <span class="count">4 שורות</span></h2>
+      <h3>מבנה</h3>
+      <table class="schema-table">
+        <thead><tr><th>עמודה</th><th>סוג</th><th>מאפיינים</th></tr></thead>
+        <tbody><tr><td>INCORP_DATE</td><td>TEXT</td><td></td></tr><tr><td>NAME</td><td>TEXT</td><td> NOT NULL</td></tr><tr><td>STATE_ID</td><td>TEXT</td><td> NOT NULL</td></tr><tr><td>CUST_ID</td><td>INTEGER</td><td> NOT NULL</td></tr></tbody>
+      </table>
+      <h3>נתונים (עד 50 שורות)</h3>
+      <div class="scroll"><table><thead><tr><th>INCORP_DATE</th><th>NAME</th><th>STATE_ID</th><th>CUST_ID</th></tr></thead><tbody><tr><td>1995-05-01</td><td>Chilton Engineering</td><td>12-345-678</td><td>10</td></tr><tr><td>2001-01-01</td><td>Northeast Cooling Inc.</td><td>23-456-789</td><td>11</td></tr><tr><td>2002-06-30</td><td>Superior Auto Body</td><td>34-567-890</td><td>12</td></tr><tr><td>1999-05-01</td><td>AAA Insurance Inc.</td><td>45-678-901</td><td>13</td></tr></tbody></table></div>
+    </section>
+    <section class="table-card" id="CUSTOMER">
+      <h2>CUSTOMER <span class="count">13 שורות</span></h2>
+      <h3>מבנה</h3>
+      <table class="schema-table">
+        <thead><tr><th>עמודה</th><th>סוג</th><th>מאפיינים</th></tr></thead>
+        <tbody><tr><td>CUST_ID</td><td>INTEGER</td><td>PK</td></tr><tr><td>ADDRESS</td><td>TEXT</td><td></td></tr><tr><td>CITY</td><td>TEXT</td><td></td></tr><tr><td>CUST_TYPE_CD</td><td>TEXT</td><td> NOT NULL</td></tr><tr><td>FED_ID</td><td>TEXT</td><td> NOT NULL</td></tr><tr><td>POSTAL_CODE</td><td>TEXT</td><td></td></tr><tr><td>STATE</td><td>TEXT</td><td></td></tr></tbody>
+      </table>
+      <h3>נתונים (עד 50 שורות)</h3>
+      <div class="scroll"><table><thead><tr><th>CUST_ID</th><th>ADDRESS</th><th>CITY</th><th>CUST_TYPE_CD</th><th>FED_ID</th><th>POSTAL_CODE</th><th>STATE</th></tr></thead><tbody><tr><td>1</td><td>47 Mockingbird Ln</td><td>Lynnfield</td><td>I</td><td>111-11-1111</td><td>01940</td><td>MA</td></tr><tr><td>2</td><td>372 Clearwater Blvd</td><td>Woburn</td><td>I</td><td>222-22-2222</td><td>01801</td><td>MA</td></tr><tr><td>3</td><td>18 Jessup Rd</td><td>Quincy</td><td>I</td><td>333-33-3333</td><td>02169</td><td>MA</td></tr><tr><td>4</td><td>12 Buchanan Ln</td><td>Waltham</td><td>I</td><td>444-44-4444</td><td>02451</td><td>MA</td></tr><tr><td>5</td><td>2341 Main St</td><td>Salem</td><td>I</td><td>555-55-5555</td><td>03079</td><td>NH</td></tr><tr><td>6</td><td>12 Blaylock Ln</td><td>Waltham</td><td>I</td><td>666-66-6666</td><td>02451</td><td>MA</td></tr><tr><td>7</td><td>29 Admiral Ln</td><td>Wilmington</td><td>I</td><td>777-77-7777</td><td>01887</td><td>MA</td></tr><tr><td>8</td><td>472 Freedom Rd</td><td>Salem</td><td>I</td><td>888-88-8888</td><td>03079</td><td>NH</td></tr><tr><td>9</td><td>29 Maple St</td><td>Newton</td><td>I</td><td>999-99-9999</td><td>02458</td><td>MA</td></tr><tr><td>10</td><td>7 Industrial Way</td><td>Salem</td><td>B</td><td>04-1111111</td><td>03079</td><td>NH</td></tr><tr><td>11</td><td>287A Corporate Ave</td><td>Wilmington</td><td>B</td><td>04-2222222</td><td>01887</td><td>MA</td></tr><tr><td>12</td><td>789 Main St</td><td>Salem</td><td>B</td><td>04-3333333</td><td>03079</td><td>NH</td></tr><tr><td>13</td><td>4772 Presidential Way</td><td>Quincy</td><td>B</td><td>04-4444444</td><td>02169</td><td>MA</td></tr></tbody></table></div>
+    </section>
+    <section class="table-card" id="DEPARTMENT">
+      <h2>DEPARTMENT <span class="count">3 שורות</span></h2>
+      <h3>מבנה</h3>
+      <table class="schema-table">
+        <thead><tr><th>עמודה</th><th>סוג</th><th>מאפיינים</th></tr></thead>
+        <tbody><tr><td>DEPT_ID</td><td>INTEGER</td><td>PK</td></tr><tr><td>NAME</td><td>TEXT</td><td> NOT NULL</td></tr></tbody>
+      </table>
+      <h3>נתונים (עד 50 שורות)</h3>
+      <div class="scroll"><table><thead><tr><th>DEPT_ID</th><th>NAME</th></tr></thead><tbody><tr><td>1</td><td>Loans</td></tr><tr><td>2</td><td>Administration</td></tr><tr><td>3</td><td>IT</td></tr></tbody></table></div>
+    </section>
+    <section class="table-card" id="EMPLOYEE">
+      <h2>EMPLOYEE <span class="count">18 שורות</span></h2>
+      <h3>מבנה</h3>
+      <table class="schema-table">
+        <thead><tr><th>עמודה</th><th>סוג</th><th>מאפיינים</th></tr></thead>
+        <tbody><tr><td>EMP_ID</td><td>INTEGER</td><td>PK</td></tr><tr><td>END_DATE</td><td>TEXT</td><td></td></tr><tr><td>FIRST_NAME</td><td>TEXT</td><td> NOT NULL</td></tr><tr><td>LAST_NAME</td><td>TEXT</td><td> NOT NULL</td></tr><tr><td>START_DATE</td><td>TEXT</td><td> NOT NULL</td></tr><tr><td>TITLE</td><td>TEXT</td><td></td></tr><tr><td>ASSIGNED_BRANCH_ID</td><td>INTEGER</td><td></td></tr><tr><td>DEPT_ID</td><td>INTEGER</td><td></td></tr><tr><td>SUPERIOR_EMP_ID</td><td>INTEGER</td><td></td></tr></tbody>
+      </table>
+      <h3>נתונים (עד 50 שורות)</h3>
+      <div class="scroll"><table><thead><tr><th>EMP_ID</th><th>END_DATE</th><th>FIRST_NAME</th><th>LAST_NAME</th><th>START_DATE</th><th>TITLE</th><th>ASSIGNED_BRANCH_ID</th><th>DEPT_ID</th><th>SUPERIOR_EMP_ID</th></tr></thead><tbody><tr><td>1</td><td></td><td>Michael</td><td>Smith</td><td>2001-06-22</td><td>President</td><td>1</td><td>2</td><td></td></tr><tr><td>2</td><td></td><td>Susan</td><td>Barker</td><td>2002-09-12</td><td>Vice President</td><td>1</td><td>2</td><td>1</td></tr><tr><td>3</td><td></td><td>Robert</td><td>Tyler</td><td>2000-02-09</td><td>Treasurer</td><td>1</td><td>2</td><td>1</td></tr><tr><td>4</td><td></td><td>Susan</td><td>Hawthorne</td><td>2002-04-24</td><td>Operations Manager</td><td>1</td><td></td><td>3</td></tr><tr><td>5</td><td></td><td>John</td><td>Gooding</td><td>2003-11-14</td><td>Loan Manager</td><td>1</td><td>1</td><td>4</td></tr><tr><td>6</td><td></td><td>Helen</td><td>Fleming</td><td>2004-03-17</td><td>Head Teller</td><td>1</td><td></td><td>4</td></tr><tr><td>7</td><td></td><td>Chris</td><td>Tucker</td><td>2004-09-15</td><td>Teller</td><td>1</td><td></td><td>6</td></tr><tr><td>8</td><td></td><td>Sarah</td><td>Parker</td><td>2002-12-02</td><td>Teller</td><td>1</td><td></td><td>6</td></tr><tr><td>9</td><td></td><td>Jane</td><td>Grossman</td><td>2002-05-03</td><td>Teller</td><td>1</td><td></td><td>6</td></tr><tr><td>10</td><td></td><td>Paula</td><td>Roberts</td><td>2002-07-27</td><td>Head Teller</td><td>2</td><td></td><td>4</td></tr><tr><td>11</td><td></td><td>Thomas</td><td>Ziegler</td><td>2000-10-23</td><td>Teller</td><td>2</td><td></td><td>10</td></tr><tr><td>12</td><td></td><td>Samantha</td><td>Jameson</td><td>2003-01-08</td><td>Teller</td><td>2</td><td></td><td>10</td></tr><tr><td>13</td><td></td><td>John</td><td>Blake</td><td>2000-05-11</td><td>Head Teller</td><td>3</td><td></td><td>4</td></tr><tr><td>14</td><td></td><td>Cindy</td><td>Mason</td><td>2002-08-09</td><td>Teller</td><td>3</td><td></td><td>13</td></tr><tr><td>15</td><td></td><td>Frank</td><td>Portman</td><td>2003-04-01</td><td>Teller</td><td>3</td><td></td><td>13</td></tr><tr><td>16</td><td></td><td>Theresa</td><td>Markham</td><td>2001-03-15</td><td>Head Teller</td><td>4</td><td></td><td>4</td></tr><tr><td>17</td><td></td><td>Beth</td><td>Fowler</td><td>2002-06-29</td><td>Teller</td><td>4</td><td></td><td>16</td></tr><tr><td>18</td><td></td><td>Rick</td><td>Tulman</td><td>2002-12-12</td><td>Teller</td><td>4</td><td></td><td>16</td></tr></tbody></table></div>
+    </section>
+    <section class="table-card" id="INDIVIDUAL">
+      <h2>INDIVIDUAL <span class="count">9 שורות</span></h2>
+      <h3>מבנה</h3>
+      <table class="schema-table">
+        <thead><tr><th>עמודה</th><th>סוג</th><th>מאפיינים</th></tr></thead>
+        <tbody><tr><td>BIRTH_DATE</td><td>TEXT</td><td></td></tr><tr><td>FIRST_NAME</td><td>TEXT</td><td> NOT NULL</td></tr><tr><td>LAST_NAME</td><td>TEXT</td><td> NOT NULL</td></tr><tr><td>CUST_ID</td><td>INTEGER</td><td> NOT NULL</td></tr></tbody>
+      </table>
+      <h3>נתונים (עד 50 שורות)</h3>
+      <div class="scroll"><table><thead><tr><th>BIRTH_DATE</th><th>FIRST_NAME</th><th>LAST_NAME</th><th>CUST_ID</th></tr></thead><tbody><tr><td>1972-04-22</td><td>James</td><td>Hadley</td><td>1</td></tr><tr><td>1968-08-15</td><td>Susan</td><td>Tingley</td><td>2</td></tr><tr><td>1958-02-06</td><td>Frank</td><td>Tucker</td><td>3</td></tr><tr><td>1966-12-22</td><td>John</td><td>Hayward</td><td>4</td></tr><tr><td>1971-08-25</td><td>Charles</td><td>Frasier</td><td>5</td></tr><tr><td>1962-09-14</td><td>John</td><td>Spencer</td><td>6</td></tr><tr><td>1947-03-19</td><td>Margaret</td><td>Young</td><td>7</td></tr><tr><td>1977-07-01</td><td>Louis</td><td>Blake</td><td>8</td></tr><tr><td>1968-06-16</td><td>Richard</td><td>Farley</td><td>9</td></tr></tbody></table></div>
+    </section>
+    <section class="table-card" id="OFFICER">
+      <h2>OFFICER <span class="count">4 שורות</span></h2>
+      <h3>מבנה</h3>
+      <table class="schema-table">
+        <thead><tr><th>עמודה</th><th>סוג</th><th>מאפיינים</th></tr></thead>
+        <tbody><tr><td>OFFICER_ID</td><td>INTEGER</td><td>PK</td></tr><tr><td>END_DATE</td><td>TEXT</td><td></td></tr><tr><td>FIRST_NAME</td><td>TEXT</td><td> NOT NULL</td></tr><tr><td>LAST_NAME</td><td>TEXT</td><td> NOT NULL</td></tr><tr><td>START_DATE</td><td>TEXT</td><td> NOT NULL</td></tr><tr><td>TITLE</td><td>TEXT</td><td></td></tr><tr><td>CUST_ID</td><td>INTEGER</td><td></td></tr></tbody>
+      </table>
+      <h3>נתונים (עד 50 שורות)</h3>
+      <div class="scroll"><table><thead><tr><th>OFFICER_ID</th><th>END_DATE</th><th>FIRST_NAME</th><th>LAST_NAME</th><th>START_DATE</th><th>TITLE</th><th>CUST_ID</th></tr></thead><tbody><tr><td>1</td><td></td><td>John</td><td>Chilton</td><td>1995-05-01</td><td>President</td><td>10</td></tr><tr><td>2</td><td></td><td>Paul</td><td>Hardy</td><td>2001-01-01</td><td>President</td><td>11</td></tr><tr><td>3</td><td></td><td>Carl</td><td>Lutz</td><td>2002-06-30</td><td>President</td><td>12</td></tr><tr><td>4</td><td></td><td>Stanley</td><td>Cheswick</td><td>1999-05-01</td><td>President</td><td>13</td></tr></tbody></table></div>
+    </section>
+    <section class="table-card" id="PRODUCT">
+      <h2>PRODUCT <span class="count">8 שורות</span></h2>
+      <h3>מבנה</h3>
+      <table class="schema-table">
+        <thead><tr><th>עמודה</th><th>סוג</th><th>מאפיינים</th></tr></thead>
+        <tbody><tr><td>PRODUCT_CD</td><td>TEXT</td><td> NOT NULL</td></tr><tr><td>DATE_OFFERED</td><td>TEXT</td><td></td></tr><tr><td>DATE_RETIRED</td><td>TEXT</td><td></td></tr><tr><td>NAME</td><td>TEXT</td><td> NOT NULL</td></tr><tr><td>PRODUCT_TYPE_CD</td><td>TEXT</td><td></td></tr></tbody>
+      </table>
+      <h3>נתונים (עד 50 שורות)</h3>
+      <div class="scroll"><table><thead><tr><th>PRODUCT_CD</th><th>DATE_OFFERED</th><th>DATE_RETIRED</th><th>NAME</th><th>PRODUCT_TYPE_CD</th></tr></thead><tbody><tr><td>CHK</td><td>2000-01-01</td><td></td><td>checking account</td><td>ACCOUNT</td></tr><tr><td>SAV</td><td>2000-01-01</td><td></td><td>savings account</td><td>ACCOUNT</td></tr><tr><td>MM</td><td>2000-01-01</td><td></td><td>money market account</td><td>ACCOUNT</td></tr><tr><td>CD</td><td>2000-01-01</td><td></td><td>certificate of deposit</td><td>ACCOUNT</td></tr><tr><td>MRT</td><td>2000-01-01</td><td></td><td>home mortgage</td><td>LOAN</td></tr><tr><td>AUT</td><td>2000-01-01</td><td></td><td>auto loan</td><td>LOAN</td></tr><tr><td>BUS</td><td>2000-01-01</td><td></td><td>business line of credit</td><td>LOAN</td></tr><tr><td>SBL</td><td>2000-01-01</td><td></td><td>small business loan</td><td>LOAN</td></tr></tbody></table></div>
+    </section>
+    <section class="table-card" id="PRODUCT_TYPE">
+      <h2>PRODUCT_TYPE <span class="count">3 שורות</span></h2>
+      <h3>מבנה</h3>
+      <table class="schema-table">
+        <thead><tr><th>עמודה</th><th>סוג</th><th>מאפיינים</th></tr></thead>
+        <tbody><tr><td>PRODUCT_TYPE_CD</td><td>TEXT</td><td> NOT NULL</td></tr><tr><td>NAME</td><td>TEXT</td><td></td></tr></tbody>
+      </table>
+      <h3>נתונים (עד 50 שורות)</h3>
+      <div class="scroll"><table><thead><tr><th>PRODUCT_TYPE_CD</th><th>NAME</th></tr></thead><tbody><tr><td>ACCOUNT</td><td>Customer Accounts</td></tr><tr><td>LOAN</td><td>Individual and Business Loans</td></tr><tr><td>INSURANCE</td><td>Insurance Offerings</td></tr></tbody></table></div>
+    </section>
+  </main>
+  <script>mermaid.initialize({ startOnLoad: true, theme: "neutral" });</script>
+</body>
+</html>
